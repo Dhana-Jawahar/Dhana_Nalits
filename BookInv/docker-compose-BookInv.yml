@@ -1,0 +1,15 @@
+services:
+  fastapi:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: secretpassword
+    ports:
+      - "5432:5432"

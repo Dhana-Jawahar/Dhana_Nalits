@@ -1,7 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os
 
-DATABASE_URL = "postgresql+psycopg2://postgres:password123@localhost:5432/bookinvdb"
+
+DATABASE_URL = os.environ.get('DB_URL')
+# "postgresql+psycopg2://"+dbuser+":"+dbpassword +"@localhost:5432/"+dbname
 
 engine = create_engine(DATABASE_URL)
 

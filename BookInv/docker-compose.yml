@@ -1,15 +1,29 @@
 services:
   fastapi:
-    build: .
+    build: .      
     ports:
       - "8000:8000"
+    env_file:
+      .env
     environment:
-      - ENVIRONMENT=development
+      DB_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PWD}@bookinv-db:5432/${POSTGRES_DB}"
+      
   postgres:
     image: postgres:15
+    container_name: bookinv-db
+    env_file:
+      .env
     environment:
-      POSTGRES_DB: bookinvdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PWD}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
     ports:
-      - "5432:5432"
+      - "5432:5432"  
+networks:
+  default:
+    name: bookinv_default
+    driver: bridge
+    

@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Numeric
-from BookInv.databaseconnect import Base
+from databaseconnect import Base
 
 
 class Book(Base):

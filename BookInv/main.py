@@ -1,10 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from BookInv import models
-from BookInv import schemas
+# from BookInv import models
 
-from BookInv.databaseconnect import engine, get_db
+from models import Book
+from databaseconnect import get_db
 
 
 app = FastAPI(title="Book Inventory API")
@@ -17,12 +17,12 @@ def home():
 
 @app.get("/books")
 def get_books(db: Session = Depends(get_db)):
-    return db.query(models.Book).all()
+    return db.query(Book).all()
 
 
 @app.get("/books/{book_id}")
 def get_book(book_id: int, db: Session = Depends(get_db)):
-    book = db.query(models.Book).filter(models.Book.bookid == book_id).first()
+    book = db.query(Book).filter(Book.bookid == book_id).first()
 
     if not book:
         raise HTTPException(
@@ -33,7 +33,7 @@ def get_book(book_id: int, db: Session = Depends(get_db)):
 
 @app.delete("/books/{book_id}")
 def delete_book(book_id: int, db: Session = Depends(get_db)):
-    book = db.query(models.Book).filter(models.Book.bookid == book_id).first()
+    book = db.query(Book).filter(Book.bookid == book_id).first()
     if not book:
         raise HTTPException(
             status_code=404,
@@ -56,7 +56,7 @@ def create_book(title: str,
     quantity: int = 0 ,    
     db: Session = Depends(get_db)
 ):
-    new_book = models.Book(
+    new_book = Book(
         title=title,
         author=author,
         isbn=isbn,
@@ -74,7 +74,7 @@ def create_book(title: str,
 @app.put("/books/{book_id}")
 def update_book(book_id: int,title: str, author: str, isbn: str, price: float,quantity: int = 0 ,
                  db: Session = Depends(get_db)):
-    u_book = db.query(models.Book).filter(models.Book.bookid == book_id).first()
+    u_book = db.query(Book).filter(Book.bookid == book_id).first()
     if not u_book:
          raise HTTPException(
                     status_code=404,

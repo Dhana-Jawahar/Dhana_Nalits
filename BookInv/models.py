@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Numeric
+from sqlalchemy import Column, Integer, String, Numeric, CheckConstraint
 from databaseconnect import Base
 
 
@@ -12,10 +12,14 @@ class Book(Base):
     price = Column(Numeric(10, 2), nullable=False)
     quantity = Column(Integer, nullable=False, default=0)
 
-class User(Base):
-    __tablename__="users"
-    userid = Column(Integer, primary_key=True, index=True)
-    username = Column(String(255), nullable=False)
+class UserDetail(Base):
+    __tablename__ = 'users'
+
+    userid = Column(Integer, primary_key=True)
+    username = Column(String(150), unique=True, nullable=False)
     userpwd = Column(String(255), nullable=False)
-    role = Column(String(20), nullable=False, default="user")
-    
+    role = Column(String(20), nullable=False, default='user')
+
+    __table_args__ = (
+        CheckConstraint(role.in_(['admin', 'user']), name='chk_only_role'),
+    )

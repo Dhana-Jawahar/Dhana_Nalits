@@ -12,10 +12,10 @@
 
 CREATE TABLE IF NOT EXISTS users (
     userid SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
+    username VARCHAR(150) UNIQUE NOT NULL,
     userpwd VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL DEFAULT 'user'   
-);
+    role VARCHAR(20) NOT NULL DEFAULT 'user' ,  
+    CONSTRAINT chk_only_role
+    CHECK (role IN ('admin', 'user')));
 
- INSERT INTO users Values (1,'admin','admin123','admin');
- INSERT INTO users Values (2,'user1','user123','user');
+ 

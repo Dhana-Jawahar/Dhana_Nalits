@@ -6,9 +6,13 @@ import bcrypt
 from models import Book
 from models import UserDetail
 from databaseconnect import get_db
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
+
 
 
 app = FastAPI(title="Book Inventory API")
+# app.add_middleware(TrustedHostMiddleware,allowed_hosts=["BookInvApp.com","localhost","127.0.0.1"])
 
 security = HTTPBasic()
 
